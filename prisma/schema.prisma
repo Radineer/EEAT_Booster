@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Tenant {
+  id       String          @id @default(uuid()) @db.Uuid
+  name     String
+  authors  AuthorProfile[]
+  sites    Site[]
+}
+
+model Site {
+  id        String           @id @default(uuid()) @db.Uuid
+  tenant    Tenant           @relation(fields: [tenantId], references: [id])
+  tenantId  String           @db.Uuid
+  name      String
+  url       String
+  authors   SiteAuthorLink[]
+}
+
+model AuthorProfile {
+  id          String           @id @default(uuid()) @db.Uuid
+  tenant      Tenant           @relation(fields: [tenantId], references: [id])
+  tenantId    String           @db.Uuid
+  name        String
+  slug        String           @unique
+  title       String?
+  bio         String?
+  avatarUrl   String?
+  credentials Json?
+  socials     Json?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  sites       SiteAuthorLink[]
+}
+
+model SiteAuthorLink {
+  id        String         @id @default(uuid()) @db.Uuid
+  author    AuthorProfile  @relation(fields: [authorId], references: [id])
+  authorId  String         @db.Uuid
+  site      Site           @relation(fields: [siteId], references: [id])
+  siteId    String         @db.Uuid
+  role      String?
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  @@unique([authorId, siteId])
+}
