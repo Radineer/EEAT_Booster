@@ -13,6 +13,7 @@
   "license": "ISC",
   "description": "Radineer EEAT-Booster API Backend using Supabase",
   "dependencies": {
+    "@prisma/client": "^6.8.2",
     "@supabase/supabase-js": "^2.39.3",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
@@ -20,6 +21,7 @@
     "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
-    "nodemon": "^3.0.3"
+    "nodemon": "^3.0.3",
+    "prisma": "^6.8.2"
   }
 }
